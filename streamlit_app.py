@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import json
 import seaborn as sns
+from Summary import summary_gen
 import matplotlib.pyplot as plt
 import io
 import openai
@@ -30,6 +31,7 @@ if uploaded_file is not None:
     elif not uploaded_file.name.endswith((".csv",".pdf")):
         st.write("Wrong file uploaded.Please upload a csv file")
     df = pd.read_csv(uploaded_file)
+    o_summary,summary= summary_gen(df)
     @dataclass
     class Message:
         """Class for keeping track of a chat message."""
