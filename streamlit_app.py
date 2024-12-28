@@ -1,20 +1,11 @@
-import Rules
 from API import api
 import streamlit as st 
 import pandas as pd
 import json
-from execute import execute_code_safely
 import seaborn as sns
 import matplotlib.pyplot as plt
 import io
 import openai
-from Summary import summary_gen
-from tabs import Tabs
-from PDF import pdf_parser
-import os
-from Univariate_Analysis import goal_generate
-from Multivariate_Analysis import mul_goal_generate
-from Code_holder import code_generation
 from dataclasses import dataclass
 from typing import Literal
 import streamlit as st
