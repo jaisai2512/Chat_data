@@ -2,7 +2,6 @@ from API import api
 import Rules
 import json
 import streamlit as st
-from json_correction import format_correction
 def summary_gen(df):
   rules = Rules.get_column_properties(df)
 
