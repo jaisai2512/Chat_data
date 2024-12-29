@@ -164,55 +164,56 @@ if uploaded_file is not None:
             
 
     load_css()
-    initialize_session_state()
+initialize_session_state()
 
-    st.title("Question Bot 🤖")
+# Title of the app
+st.title("Question Bot 🤖")
 
-    chat_placeholder = st.container()
-    prompt_placeholder = st.form("chat-form")
-    credit_card_placeholder = st.empty()
+# Chat section container
+chat_placeholder = st.container()
 
-    with chat_placeholder:
-        for chat in st.session_state.history:
+# Chat messages display
+with chat_placeholder:
+    for chat in st.session_state.history:
+        if chat["origin"] == "human":
             div = f"""
-    <div class="chat-row 
-    {'' if chat.origin == 'ai' else 'row-reverse'}">
-    <img class="chat-icon" src="app/static/{
-        'ai_icon.png' if chat.origin == 'ai' 
-                      else 'user_icon.png'}"
-         width=32 height=32>
-    <div class="chat-bubble
-    {'ai-bubble' if chat.origin == 'ai' else 'human-bubble'}">
-        &#8203;{chat.message}
-    </div>
-</div>
-        """
-            st.markdown(div, unsafe_allow_html=True)
-    
-        for _ in range(3):
-            st.markdown("")
+            <div class="user-message">YOU: {chat["message"]}</div>
+            """
+        else:
+            div = f"""
+            <div class="system-message">System: {chat["message"]}</div>
+            """
+        st.markdown(div, unsafe_allow_html=True)
 
-    with prompt_placeholder:
-        st.markdown("**Chat**")
-        cols = st.columns((6, 1))
-        cols[0].text_input(
-            "Chat",
-            value="Hello bot",
-            label_visibility="collapsed",
+    for _ in range(3):
+        st.markdown("")  # Add some space between messages
+
+# User input and submission form
+prompt_placeholder = st.form("chat-form")
+with prompt_placeholder:
+    st.markdown("**Chat**")
+    cols = st.columns((6, 1))
+    cols[0].text_input(
+        "Chat",
+        value=st.session_state.human_prompt,
+        label_visibility="collapsed",
         key="human_prompt",
     )
-        cols[1].form_submit_button(
+    cols[1].form_submit_button(
         "Submit", 
         type="primary", 
         on_click=on_click_callback, 
     )
 
-    credit_card_placeholder.caption(f"""
-    Used  tokens \n
-    Debug Langchain conversation: 
+# Optional placeholder for additional elements like credit card info or debugging
+credit_card_placeholder = st.empty()
+credit_card_placeholder.caption("""
+Used tokens \n
+Debug Langchain conversation:
 """)
 
-    components.html("""
+# JavaScript for submitting the form on Enter key press
+components.html("""
 <script>
 const streamlitDoc = window.parent.document;
 
@@ -231,10 +232,6 @@ streamlitDoc.addEventListener('keydown', function(e) {
     }
 });
 </script>
-""", 
-    height=0,
-    width=0,
-)
-    
+""", height=0, width=0)
 else:
     st.write("Please upload a CSV or PDF file to proceed.")
