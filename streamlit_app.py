@@ -173,6 +173,10 @@ if uploaded_file is not None:
     prompt_placeholder = st.form("chat-form")
     credit_card_placeholder = st.empty()
     
+    # Function to handle clear action
+    def clear_chat():
+        st.session_state.history = []  # Clear chat history
+    
     with chat_placeholder:
         for chat in st.session_state.history:
             if chat.origin == 'ai':
@@ -198,18 +202,38 @@ if uploaded_file is not None:
     
     with prompt_placeholder:
         st.markdown("**Chat**")
-        cols = st.columns((6, 1))
-        cols[0].text_input(
+        
+        # Create a styled input box (strength-like design)
+        user_input = st.text_area(
             "Chat",
-            value="Hello bot",
+            value="",
+            height=100,
             label_visibility="collapsed",
             key="human_prompt",
+            placeholder="Type your message here..."
         )
-        cols[1].form_submit_button(
-            "Submit", 
-            type="primary", 
-            on_click=on_click_callback, 
-        )
+        
+        # Add Send and Clear buttons
+        send_button = st.button("Send", on_click=on_click_callback)  # Send button with on-click callback
+        clear_button = st.button("Clear", on_click=clear_chat)  # Clear button with action to clear chat
+        
+        # Optional: You can style the buttons with CSS for more control
+        st.markdown("""
+        <style>
+            .stButton > button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            .stButton > button:hover {
+                background-color: #45a049;
+            }
+        </style>
+        """, unsafe_allow_html=True)
     
     credit_card_placeholder.caption(f"""
     Used tokens \n
@@ -236,6 +260,7 @@ if uploaded_file is not None:
     });
     </script>
     """, 
-    height=0,width=0)
+    height=0,
+    width=0)
 else:
     st.write("Please upload a CSV or PDF file to proceed.")
