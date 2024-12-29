@@ -102,6 +102,12 @@ if uploaded_file is not None:
     def initialize_session_state():
         if "history" not in st.session_state:
             st.session_state.history = []
+    # Ensure `human_prompt` is initialized in session state before use
+    if 'human_prompt' not in st.session_state:
+        st.session_state.human_prompt = ""  # Default value or empty string
+    
+    # Then you can safely use `human_prompt`
+    value = st.session_state.human_prompt
 
     def on_click_callback():
         # Ensure the user input is stored correctly in the history
