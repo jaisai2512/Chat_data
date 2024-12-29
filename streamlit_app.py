@@ -88,6 +88,7 @@ if uploaded_file is not None:
             st.dataframe(df)
     except Exception as e:
         st.error(f"An error occurred while reading the file: {e}")
+    o_summary,summary= summary_gen(df)
     @dataclass
     class Message:
         """Class for keeping track of a chat message."""
