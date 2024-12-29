@@ -90,28 +90,26 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"An error occurred while reading the file: {e}")
     o_summary,summary= summary_gen(df)
+    @dataclass
     class Message:
         """Class for keeping track of a chat message."""
-        def __init__(self, origin: Literal["human", "ai"], message: str):
-            self.origin = origin
-            self.message = message
-    
-    # Load CSS
+        origin: Literal["human", "ai"]
+        message: str
+
     def load_css():
         with open("static/styles.css", "r") as f:
             css = f"<style>{f.read()}</style>"
             st.markdown(css, unsafe_allow_html=True)
-    
-    # Initialize session state
+
     def initialize_session_state():
         if "history" not in st.session_state:
             st.session_state.history = []
-    
-    # On click callback to process the message and generate a response
+
+
     def on_click_callback():
         with get_openai_callback() as cb:
             human_prompt = st.session_state.human_prompt
-            message = message = [
+            message = [
     {
         "role": "system",
         "content": "You are an expert query interpreter for data analysis. Your job is to assist users by identifying variables involved in their query and classifying the type of output they expect.\n\n### Your Tasks:\n1. **Variable Identification**:\n   - Analyze the user's query.\n   - Identify the variables in the query that match the given list and then output the variables with the name as in the list..\n\n2. **Output Type Classification**:\n   - Determine whether the query's output is:\n     - **Visual**: If the query asks for patterns, trends, comparisons, or insights requiring a graph, chart, or plot.\n     - **Numerical**: If the query asks for specific metrics, values, or summaries.\n\n### Input Format:\nYou will be given:\n- **Query**: A user-generated question or request.\n- **Variables**: A list of possible variables, e.g., `[\"variable_1\", \"variable_2\", ..., \"variable_n\"]`.\n\n### Response Format:\nProvide your response in the following structured JSON format:\n```json\n{\n  \"matched_variables\": [\"variable_1\", \"variable_2\"],\n  \"output_type\": \"visual\" // or \"numerical\"\n}\n```\n\n### Guidelines:\n- Select the variable name from the given list that is explicitly or implicitly mentioned in the user's query, ensuring there are no missing letters in the word.\n- Use context and intent from the query to decide the output type accurately.\n- If no variable matches, leave the \"matched_variables\" array empty."
@@ -119,7 +117,7 @@ if uploaded_file is not None:
     {
         "role": "user",
         "content": f"Query:{human_prompt}\nVariables: {df.columns}\n Please output only the json nothing apart from it"
-    }]
+    }]           
             answer = json.loads(api(message))
             var_prop = []
             for i in answer['matched_variables']:
@@ -150,54 +148,93 @@ if uploaded_file is not None:
     "content": ""
   }
 ]
+            #llm_response =exec(api(message1), {"df": df})
             captured_output = io.StringIO()
             sys.stdout = captured_output  # Redirect stdout
-            exec(api(message1), {"df": df})  # Dangerous: Ensure you sanitize this!
+
+            exec(api(message1), {"df": df})
+
             sys.stdout = sys.__stdout__  # Restore stdout
             llm_response = captured_output.getvalue().strip()
-            st.session_state.history.append(Message("human", human_prompt))
-            st.session_state.history.append(Message("ai", llm_response))
-    
-    # Main App
+            st.session_state.history.append(
+            Message("human", human_prompt)
+        )
+            st.session_state.history.append(
+            Message("ai", llm_response)
+        )
+            
+
     load_css()
     initialize_session_state()
-    
+
     st.title("Question Bot 🤖")
-    
+
     chat_placeholder = st.container()
     prompt_placeholder = st.form("chat-form")
     credit_card_placeholder = st.empty()
-    
+
     with chat_placeholder:
         for chat in st.session_state.history:
             div = f"""
-    <div class="chat-row {'' if chat.origin == 'ai' else 'row-reverse'}">
-        <img class="chat-icon" src="app/static/{'ai_icon.png' if chat.origin == 'ai' else 'user_icon.png'}" width=32 height=32>
-        <div class="chat-bubble {'ai-bubble' if chat.origin == 'ai' else 'human-bubble'}">
-            &#8203;{chat.message}
-        </div>
+    <div class="chat-row 
+    {'' if chat.origin == 'ai' else 'row-reverse'}">
+    <img class="chat-icon" src="app/static/{
+        'ai_icon.png' if chat.origin == 'ai' 
+                      else 'user_icon.png'}"
+         width=32 height=32>
+    <div class="chat-bubble
+    {'ai-bubble' if chat.origin == 'ai' else 'human-bubble'}">
+        &#8203;{chat.message}
     </div>
-    """
+</div>
+        """
             st.markdown(div, unsafe_allow_html=True)
     
+        for _ in range(3):
+            st.markdown("")
+
     with prompt_placeholder:
         st.markdown("**Chat**")
         cols = st.columns((6, 1))
-        cols[0].text_input("Chat", value="Hello bot", label_visibility="collapsed", key="human_prompt")
-        cols[1].form_submit_button("Submit", type="primary", on_click=on_click_callback)
-    
-    credit_card_placeholder.caption(f"Used tokens\nDebug Langchain conversation:")
+        cols[0].text_input(
+            "Chat",
+            value="Hello bot",
+            label_visibility="collapsed",
+        key="human_prompt",
+    )
+        cols[1].form_submit_button(
+        "Submit", 
+        type="primary", 
+        on_click=on_click_callback, 
+    )
+
+    credit_card_placeholder.caption(f"""
+    Used  tokens \n
+    Debug Langchain conversation: 
+""")
+
     components.html("""
-    <script>
-    const streamlitDoc = window.parent.document;
-    const buttons = Array.from(streamlitDoc.querySelectorAll('.stButton > button'));
-    const submitButton = buttons.find(el => el.innerText === 'Submit');
-    streamlitDoc.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
+<script>
+const streamlitDoc = window.parent.document;
+
+const buttons = Array.from(
+    streamlitDoc.querySelectorAll('.stButton > button')
+);
+const submitButton = buttons.find(
+    el => el.innerText === 'Submit'
+);
+
+streamlitDoc.addEventListener('keydown', function(e) {
+    switch (e.key) {
+        case 'Enter':
             submitButton.click();
-        }
-    });
-    </script>
-    """, height=0, width=0)
+            break;
+    }
+});
+</script>
+""", 
+    height=0,
+    width=0,
+)
 else:
     st.write("Please upload a CSV or PDF file to proceed.")
