@@ -169,98 +169,126 @@ if uploaded_file is not None:
 
     st.title("Question Bot 🤖")
 
-    chat_placeholder = st.container()
-    prompt_placeholder = st.form("chat-form")
-    credit_card_placeholder = st.empty()
-    
-    # Function to handle clear action
-    def clear_chat():
-        st.session_state.history = []  # Clear chat history
-    
-    with chat_placeholder:
-        for chat in st.session_state.history:
-            if chat.origin == 'ai':
-                div = f"""
-        <div class="chat-row">
-            <div class="message-box system-message" style="background-color: #e0e0e0; padding: 10px; border-radius: 5px;">
-                <strong>System:</strong> {chat.message}
+    import streamlit as st
+import time
+
+chat_placeholder = st.container()
+prompt_placeholder = st.form("chat-form")
+credit_card_placeholder = st.empty()
+
+# Function to handle clear action
+def clear_chat():
+    st.session_state.history = []  # Clear chat history
+
+# Function for Send button on-click callback
+def on_click_callback():
+    user_message = st.session_state.human_prompt
+    # Simulate AI response (you would replace this with your actual response generation logic)
+    ai_response = f"AI Response: {user_message[::-1]}"  # Just reversing the message for illustration
+    st.session_state.history.append({"origin": "user", "message": user_message})
+    st.session_state.history.append({"origin": "ai", "message": ai_response})
+    st.session_state.human_prompt = ""  # Clear the input field after sending the message
+
+with chat_placeholder:
+    for chat in st.session_state.history:
+        if chat["origin"] == "ai":
+            div = f"""
+            <div class="chat-row">
+                <div class="message-box system-message" style="background-color: #e0e0e0; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>System:</strong> {chat['message']}
+                </div>
             </div>
-        </div>
-                """
-            else:
-                div = f"""
-        <div class="chat-row">
-            <div class="message-box user-message" style="background-color: #d1f7c4; padding: 10px; border-radius: 5px;">
-                <strong>You:</strong> {chat.message}
+            """
+        else:
+            div = f"""
+            <div class="chat-row">
+                <div class="message-box user-message" style="background-color: #d1f7c4; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <strong>You:</strong> {chat['message']}
+                </div>
             </div>
-        </div>
-                """
-            st.markdown(div, unsafe_allow_html=True)
+            """
+        st.markdown(div, unsafe_allow_html=True)
         
-        for _ in range(3):
-            st.markdown("")  # Space between rows
+    for _ in range(3):
+        st.markdown("")  # Space between rows
+
+with prompt_placeholder:
+    st.markdown("### **Chat**", unsafe_allow_html=True)
     
-    with prompt_placeholder:
-        st.markdown("**Chat**")
-        
-        # Create a styled input box (strength-like design)
-        user_input = st.text_area(
-            "Chat",
-            value="",
-            height=100,
-            label_visibility="collapsed",
-            key="human_prompt",
-            placeholder="Type your message here..."
-        )
-        
-        # Add Send and Clear buttons
-        send_button = st.button("Send", on_click=on_click_callback)  # Send button with on-click callback
-        clear_button = st.button("Clear", on_click=clear_chat)  # Clear button with action to clear chat
-        
-        # Optional: You can style the buttons with CSS for more control
-        st.markdown("""
-        <style>
-            .stButton > button {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                font-size: 16px;
-                cursor: pointer;
-            }
-            .stButton > button:hover {
-                background-color: #45a049;
-            }
-        </style>
-        """, unsafe_allow_html=True)
-    
-    credit_card_placeholder.caption(f"""
-    Used tokens \n
-    Debug Langchain conversation: 
-    """)
-    
-    components.html("""
-    <script>
-    const streamlitDoc = window.parent.document;
-    
-    const buttons = Array.from(
-        streamlitDoc.querySelectorAll('.stButton > button')
-    );
-    const submitButton = buttons.find(
-        el => el.innerText === 'Submit'
-    );
-    
-    streamlitDoc.addEventListener('keydown', function(e) {
-        switch (e.key) {
-            case 'Enter':
-                submitButton.click();
-                break;
+    # Create a styled input box (strength-like design)
+    user_input = st.text_area(
+        "Chat",
+        value="",
+        height=100,
+        label_visibility="collapsed",
+        key="human_prompt",
+        placeholder="Type your message here..."
+    )
+
+    # Add Send and Clear buttons
+    send_button = st.button("Send", on_click=on_click_callback)  # Send button with on-click callback
+    clear_button = st.button("Clear", on_click=clear_chat)  # Clear button with action to clear chat
+
+    # Optional: You can style the buttons with CSS for more control
+    st.markdown("""
+    <style>
+        .stButton > button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-    });
-    </script>
-    """, 
-    height=0,
-    width=0)
+        .stButton > button:hover {
+            background-color: #45a049;
+        }
+        .stButton > button:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(72, 187, 120, 0.7);
+        }
+        .stTextArea textarea {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            font-size: 14px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Add a loading spinner when the user sends a message
+    if send_button:
+        with st.spinner('Processing...'):
+            time.sleep(1)  # Simulate delay in response
+            on_click_callback()
+
+credit_card_placeholder.caption("""
+Used tokens \n
+Debug Langchain conversation:
+""")
+
+components.html("""
+<script>
+const streamlitDoc = window.parent.document;
+
+const buttons = Array.from(
+    streamlitDoc.querySelectorAll('.stButton > button')
+);
+const submitButton = buttons.find(
+    el => el.innerText === 'Submit'
+);
+
+streamlitDoc.addEventListener('keydown', function(e) {
+    switch (e.key) {
+        case 'Enter':
+            submitButton.click();
+            break;
+    }
+});
+</script>
+""", height=0, width=0)
+
 else:
     st.write("Please upload a CSV or PDF file to proceed.")
