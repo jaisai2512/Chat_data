@@ -172,27 +172,30 @@ if uploaded_file is not None:
     chat_placeholder = st.container()
     prompt_placeholder = st.form("chat-form")
     credit_card_placeholder = st.empty()
-
+    
     with chat_placeholder:
         for chat in st.session_state.history:
-            div = f"""
-    <div class="chat-row 
-    {'' if chat.origin == 'ai' else 'row-reverse'}">
-    <img class="chat-icon" src="app/static/{
-        'ai_icon.png' if chat.origin == 'ai' 
-                      else 'user_icon.png'}"
-         width=32 height=32>
-    <div class="chat-bubble
-    {'ai-bubble' if chat.origin == 'ai' else 'human-bubble'}">
-        &#8203;{chat.message}
-    </div>
-</div>
-        """
+            if chat.origin == 'ai':
+                div = f"""
+        <div class="chat-row">
+            <div class="message-box system-message" style="background-color: #e0e0e0; padding: 10px; border-radius: 5px;">
+                <strong>System:</strong> {chat.message}
+            </div>
+        </div>
+                """
+            else:
+                div = f"""
+        <div class="chat-row">
+            <div class="message-box user-message" style="background-color: #d1f7c4; padding: 10px; border-radius: 5px;">
+                <strong>You:</strong> {chat.message}
+            </div>
+        </div>
+                """
             st.markdown(div, unsafe_allow_html=True)
-    
+        
         for _ in range(3):
-            st.markdown("")
-
+            st.markdown("")  # Space between rows
+    
     with prompt_placeholder:
         st.markdown("**Chat**")
         cols = st.columns((6, 1))
@@ -200,41 +203,39 @@ if uploaded_file is not None:
             "Chat",
             value="Hello bot",
             label_visibility="collapsed",
-        key="human_prompt",
-    )
+            key="human_prompt",
+        )
         cols[1].form_submit_button(
-        "Submit", 
-        type="primary", 
-        on_click=on_click_callback, 
-    )
-
+            "Submit", 
+            type="primary", 
+            on_click=on_click_callback, 
+        )
+    
     credit_card_placeholder.caption(f"""
-    Used  tokens \n
+    Used tokens \n
     Debug Langchain conversation: 
-""")
-
+    """)
+    
     components.html("""
-<script>
-const streamlitDoc = window.parent.document;
-
-const buttons = Array.from(
-    streamlitDoc.querySelectorAll('.stButton > button')
-);
-const submitButton = buttons.find(
-    el => el.innerText === 'Submit'
-);
-
-streamlitDoc.addEventListener('keydown', function(e) {
-    switch (e.key) {
-        case 'Enter':
-            submitButton.click();
-            break;
-    }
-});
-</script>
-""", 
-    height=0,
-    width=0,
-)
+    <script>
+    const streamlitDoc = window.parent.document;
+    
+    const buttons = Array.from(
+        streamlitDoc.querySelectorAll('.stButton > button')
+    );
+    const submitButton = buttons.find(
+        el => el.innerText === 'Submit'
+    );
+    
+    streamlitDoc.addEventListener('keydown', function(e) {
+        switch (e.key) {
+            case 'Enter':
+                submitButton.click();
+                break;
+        }
+    });
+    </script>
+    """, 
+    height=0,width=0)
 else:
     st.write("Please upload a CSV or PDF file to proceed.")
