@@ -205,27 +205,34 @@ if uploaded_file is not None:
         for _ in range(3):
             st.markdown("")
     
-    # Prompt interface
+    def clear_input():
+        # Reset only the human_prompt input field
+        st.session_state.human_prompt = ""
+    
+    # Chat interface
     with prompt_placeholder:
         st.markdown("**Chat**")
+        
+        # Creating two columns for input and buttons
         cols = st.columns((6, 1))
+        
+        # Text input for chat
         cols[0].text_input(
             "Chat",
-            value="Hello bot",
+            value=st.session_state.get("human_prompt", "Hello bot"),  # Default value
             label_visibility="collapsed",
             key="human_prompt",
         )
-        cols[1].form_submit_button(
+        
+        # Submit button for submitting chat
+        submit_button = cols[1].form_submit_button(
             "Submit", 
             type="primary", 
             on_click=on_click_callback, 
         )
-    
-    # Credit card placeholder (caption if needed)
-    credit_card_placeholder.caption(f"""
-    Used tokens \n
-    Debug Langchain conversation: 
-    """)
+        
+        # Clear button for resetting input (only input, not history)
+        clear_button = cols[1].button("Clear", on_click=clear_input)
     
     # JavaScript to simulate 'Enter' key click on submit button
     components.html("""
