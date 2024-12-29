@@ -169,73 +169,65 @@ if uploaded_file is not None:
 
     st.title("Question Bot 🤖")
 
+    # Chat container
     chat_placeholder = st.container()
+    
+    # Placeholder for prompt
     prompt_placeholder = st.form("chat-form")
+    
+    # Empty placeholder for credit card (you can modify the caption if needed)
     credit_card_placeholder = st.empty()
     
+    # Chat interface
     with chat_placeholder:
         for chat in st.session_state.history:
-            if chat["origin"] == "ai":
-                div = f"""
-                <div class="chat-row">
-                    <div class="message-box system-message" style="background-color: #e0e0e0; padding: 10px; border-radius: 5px;">
-                        <strong>System:</strong> {chat["message"]}
-                    </div>
-                </div>
-                """
+            # Determine chat origin (User or AI) and adjust the row and background color
+            if chat.origin == 'ai':
+                message_class = "system-message"
+                label = "System"
+                background_color = "#f0f0f0"  # Light grey for system
             else:
-                div = f"""
-                <div class="chat-row">
-                    <div class="message-box user-message" style="background-color: #d1f7c4; padding: 10px; border-radius: 5px;">
-                        <strong>You:</strong> {chat["message"]}
-                    </div>
+                message_class = "user-message"
+                label = "You"
+                background_color = "#d0f0c0"  # Light green for user input
+    
+            div = f"""
+            <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
+                <strong>{label}:</strong>
+                <div class="{message_class}" style="margin-top: 5px;">
+                    {chat.message}
                 </div>
-                """
+            </div>
+            """
             st.markdown(div, unsafe_allow_html=True)
-    
+        
+        # Space for a little breathing room
         for _ in range(3):
-            st.markdown("")  # Space between rows
+            st.markdown("")
     
+    # Prompt interface
     with prompt_placeholder:
         st.markdown("**Chat**")
-        
-        # Create a styled input box (strength-like design)
-        user_input = st.text_area(
+        cols = st.columns((6, 1))
+        cols[0].text_input(
             "Chat",
-            value=st.session_state.human_prompt,
-            height=100,
+            value="Hello bot",
             label_visibility="collapsed",
             key="human_prompt",
-            placeholder="Type your message here..."
         )
-        
-        # Add Send and Clear buttons
-        send_button = st.button("Send", on_click=on_click_callback)  # Send button with on-click callback
-        clear_button = st.button("Clear", on_click=clear_chat)  # Clear button with action to clear chat
-        
-        # Optional: You can style the buttons with CSS for more control
-        st.markdown("""
-        <style>
-            .stButton > button {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                font-size: 16px;
-                cursor: pointer;
-            }
-            .stButton > button:hover {
-                background-color: #45a049;
-            }
-        </style>
-        """, unsafe_allow_html=True)
+        cols[1].form_submit_button(
+            "Submit", 
+            type="primary", 
+            on_click=on_click_callback, 
+        )
     
+    # Credit card placeholder (caption if needed)
     credit_card_placeholder.caption(f"""
     Used tokens \n
-    Debug Langchain conversation:
+    Debug Langchain conversation: 
     """)
     
+    # JavaScript to simulate 'Enter' key click on submit button
     components.html("""
     <script>
     const streamlitDoc = window.parent.document;
