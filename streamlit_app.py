@@ -88,7 +88,6 @@ if uploaded_file is not None:
             st.dataframe(df)
     except Exception as e:
         st.error(f"An error occurred while reading the file: {e}")
-    df = pd.read_csv(uploaded_file)
     o_summary,summary= summary_gen(df)
     @dataclass
     class Message:
