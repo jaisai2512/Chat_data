@@ -164,56 +164,56 @@ if uploaded_file is not None:
             
 
     load_css()
-initialize_session_state()
+    initialize_session_state()
 
 # Title of the app
-st.title("Question Bot 🤖")
+    st.title("Question Bot 🤖")
 
 # Chat section container
-chat_placeholder = st.container()
+    chat_placeholder = st.container()
 
 # Chat messages display
-with chat_placeholder:
-    for chat in st.session_state.history:
-        if chat["origin"] == "human":
-            div = f"""
+    with chat_placeholder:
+        for chat in st.session_state.history:
+            if chat["origin"] == "human":
+                div = f"""
             <div class="user-message">YOU: {chat["message"]}</div>
             """
-        else:
-            div = f"""
+            else:
+                div = f"""
             <div class="system-message">System: {chat["message"]}</div>
             """
-        st.markdown(div, unsafe_allow_html=True)
+            st.markdown(div, unsafe_allow_html=True)
 
-    for _ in range(3):
-        st.markdown("")  # Add some space between messages
+        for _ in range(3):
+            st.markdown("")  # Add some space between messages
 
 # User input and submission form
-prompt_placeholder = st.form("chat-form")
-with prompt_placeholder:
-    st.markdown("**Chat**")
-    cols = st.columns((6, 1))
-    cols[0].text_input(
+    prompt_placeholder = st.form("chat-form")
+    with prompt_placeholder:
+        st.markdown("**Chat**")
+        cols = st.columns((6, 1))
+        cols[0].text_input(
         "Chat",
         value=st.session_state.human_prompt,
         label_visibility="collapsed",
         key="human_prompt",
     )
-    cols[1].form_submit_button(
+        cols[1].form_submit_button(
         "Submit", 
         type="primary", 
         on_click=on_click_callback, 
     )
 
 # Optional placeholder for additional elements like credit card info or debugging
-credit_card_placeholder = st.empty()
-credit_card_placeholder.caption("""
+    credit_card_placeholder = st.empty()
+    credit_card_placeholder.caption("""
 Used tokens \n
 Debug Langchain conversation:
 """)
 
 # JavaScript for submitting the form on Enter key press
-components.html("""
+    components.html("""
 <script>
 const streamlitDoc = window.parent.document;
 
