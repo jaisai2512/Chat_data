@@ -173,30 +173,26 @@ if uploaded_file is not None:
     prompt_placeholder = st.form("chat-form")
     credit_card_placeholder = st.empty()
     
-    # Function to handle clear action
-    def clear_chat():
-        st.session_state.history = []  # Clear chat history
-    
     with chat_placeholder:
         for chat in st.session_state.history:
-            if chat.origin == 'ai':
+            if chat["origin"] == "ai":
                 div = f"""
-        <div class="chat-row">
-            <div class="message-box system-message" style="background-color: #e0e0e0; padding: 10px; border-radius: 5px;">
-                <strong>System:</strong> {chat.message}
-            </div>
-        </div>
+                <div class="chat-row">
+                    <div class="message-box system-message" style="background-color: #e0e0e0; padding: 10px; border-radius: 5px;">
+                        <strong>System:</strong> {chat["message"]}
+                    </div>
+                </div>
                 """
             else:
                 div = f"""
-        <div class="chat-row">
-            <div class="message-box user-message" style="background-color: #d1f7c4; padding: 10px; border-radius: 5px;">
-                <strong>You:</strong> {chat.message}
-            </div>
-        </div>
+                <div class="chat-row">
+                    <div class="message-box user-message" style="background-color: #d1f7c4; padding: 10px; border-radius: 5px;">
+                        <strong>You:</strong> {chat["message"]}
+                    </div>
+                </div>
                 """
             st.markdown(div, unsafe_allow_html=True)
-        
+    
         for _ in range(3):
             st.markdown("")  # Space between rows
     
@@ -206,7 +202,7 @@ if uploaded_file is not None:
         # Create a styled input box (strength-like design)
         user_input = st.text_area(
             "Chat",
-            value="",
+            value=st.session_state.human_prompt,
             height=100,
             label_visibility="collapsed",
             key="human_prompt",
@@ -237,7 +233,7 @@ if uploaded_file is not None:
     
     credit_card_placeholder.caption(f"""
     Used tokens \n
-    Debug Langchain conversation: 
+    Debug Langchain conversation:
     """)
     
     components.html("""
@@ -259,8 +255,6 @@ if uploaded_file is not None:
         }
     });
     </script>
-    """, 
-    height=0,
-    width=0)
+    """, height=0, width=0)
 else:
     st.write("Please upload a CSV or PDF file to proceed.")
