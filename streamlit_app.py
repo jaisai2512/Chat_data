@@ -107,7 +107,7 @@ if uploaded_file is not None:
         # Ensure the user input is stored correctly in the history
         human_prompt = st.session_state.human_prompt
     
-        # Step 1: Generate the message to pass to OpenAI API for query interpretation
+        # Generate the message to pass to OpenAI API for query interpretation
         message = [
             {
                 "role": "system",
@@ -122,7 +122,7 @@ if uploaded_file is not None:
         # Call API (Assumed to return response as a JSON string)
         answer = json.loads(api(message))
         
-        # Step 2: Extract matched variables from the response
+        # Extract matched variables from the response
         var_prop = []
         for i in answer['matched_variables']:
             for j in o_summary:  # Assuming 'o_summary' contains variable properties
@@ -130,7 +130,7 @@ if uploaded_file is not None:
                     var_prop.append(j)
                     break
         
-        # Step 3: Prepare second message for code generation
+        # Prepare second message for code generation
         message1 = [
             {
                 "role": "system",
@@ -160,22 +160,23 @@ if uploaded_file is not None:
         llm_response = captured_output.getvalue().strip()
         
         # Append user message and AI response to history
-        st.session_state.history.append({"origin": "human", "message": human_prompt})
-        st.session_state.history.append({"origin": "ai", "message": llm_response})
+        st.session_state.history.append(Message("human", human_prompt))
+        st.session_state.history.append(Message("ai", llm_response))
         
         # Display the conversation in the chat
         chat_placeholder = st.container()
         with chat_placeholder:
             for chat in st.session_state.history:
-                if chat["origin"] == "human":
+                if chat.origin == "human":
                     div = f"""
-                    <div class="user-message">YOU: {chat["message"]}</div>
+                    <div class="user-message">YOU: {chat.message}</div>
                     """
                 else:
                     div = f"""
-                    <div class="system-message">System: {chat["message"]}</div>
+                    <div class="system-message">System: {chat.message}</div>
                     """
                 st.markdown(div, unsafe_allow_html=True)
+
 
 
     load_css()
