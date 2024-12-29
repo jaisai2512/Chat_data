@@ -99,6 +99,9 @@ if uploaded_file is not None:
         with open("static/styles.css", "r") as f:
             css = f"<style>{f.read()}</style>"
             st.markdown(css, unsafe_allow_html=True)
+    def initialize_session_state():
+        if "history" not in st.session_state:
+            st.session_state.history = []
 
     def on_click_callback():
         # Ensure the user input is stored correctly in the history
