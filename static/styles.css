@@ -1,32 +1,79 @@
-.chat-row {
+/* General chat container */
+.chat-container {
     display: flex;
-    margin: 5px;
+    flex-direction: column;
+    height: 80vh;
     width: 100%;
-}
-
-.row-reverse {
-    flex-direction: row-reverse;
-}
-
-.chat-bubble {
-    font-family: "Source Sans Pro", sans-serif, "Segoe UI", "Roboto", sans-serif;
-    border: 1px solid transparent;
-    padding: 5px 10px;
-    margin: 0px 7px;
-    max-width: 70%;
-}
-
-.ai-bubble {
-    background: rgb(240, 242, 246);
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
     border-radius: 10px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.human-bubble {
-    background: linear-gradient(135deg, rgb(0, 178, 255) 0%, rgb(0, 106, 255) 100%); 
+/* Chat messages section */
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* User's question */
+.user-message {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #d4edda; /* Green background for user */
+    color: #155724; /* Dark green text */
+    border-radius: 8px;
+}
+
+/* System's answer */
+.system-message {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #cce5ff; /* Blue background for system */
+    color: #004085; /* Dark blue text */
+    border-radius: 8px;
+}
+
+/* Input area */
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-right: 10px;
+    outline: none;
+    background-color: #f0f0f0;
+}
+
+.chat-input:focus {
+    background-color: #ffffff;
+}
+
+.send-button {
+    background-color: #007BFF;
     color: white;
-    border-radius: 20px;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
 }
 
-.chat-icon {
-    border-radius: 5px;
+.send-button:hover {
+    background-color: #0056b3;
 }
