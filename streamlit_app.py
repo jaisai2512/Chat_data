@@ -217,7 +217,7 @@ if uploaded_file is not None:
         cols = st.columns((6, 1))
         
         # Text input for chat
-        cols[0].text_input(
+        user_input = cols[0].text_input(
             "Chat",
             value=st.session_state.get("human_prompt", "Hello bot"),  # Default value
             label_visibility="collapsed",
@@ -228,11 +228,14 @@ if uploaded_file is not None:
         submit_button = cols[1].form_submit_button(
             "Submit", 
             type="primary", 
-            on_click=on_click_callback, 
+            on_click=on_click_callback,  # Make sure on_click_callback exists
         )
         
         # Clear button for resetting input (only input, not history)
-        clear_button = cols[1].button("Clear", on_click=clear_input)
+        clear_button = cols[1].button("Clear")
+        if clear_button:
+            # Clear the input field directly
+            st.session_state.human_prompt = ""  # Reset input field
     
     # JavaScript to simulate 'Enter' key click on submit button
     components.html("""
