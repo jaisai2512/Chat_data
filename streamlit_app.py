@@ -168,7 +168,7 @@ if uploaded_file is not None:
     initialize_session_state()
 
     st.title("Question Bot 🤖")
-    st.subheader("Ask your questions, and I'll do my best to answer them!")
+    st.markdown('<h3 style="font-weight: normal;">Ask your questions, and I\'ll do my best to answer them!</h3>', unsafe_allow_html=True)
 
    # Chat container
     chat_placeholder = st.container()
