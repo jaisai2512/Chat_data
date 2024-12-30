@@ -216,28 +216,24 @@ if uploaded_file is not None:
         # Creating two columns for input and buttons
         cols = st.columns((6, 1))
 
-        st.markdown(
-    """
-    <style>
-    /* Remove the border, shadow, and background of the text input */
-    div[data-baseweb="input"] > div {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
+        custom_css = """
+<style>
+    .stTextInput>div>div>input {
+        border: 2px solid #4CAF50; /* Green border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 10px; /* Padding inside the input */
+        font-size: 16px; /* Font size */
+        color: #333; /* Text color */
     }
-    /* Remove the border and shadow of the input element itself */
-    div[data-baseweb="input"] input {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        outline: none !important; /* Remove outline on focus */
-        font-size: 16px !important; /* Optional: Adjust font size */
-        color: black !important; /* Optional: Adjust text color */
+    .stTextInput>div>div>input:focus {
+        border-color: #FF5722; /* Orange border on focus */
+        box-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Shadow on focus */
     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+</style>
+"""
+
+# Display the custom CSS
+        st.markdown(custom_css, unsafe_allow_html=True)
     
         # Text input for chat without box styling
         user_input = cols[0].text_input(
