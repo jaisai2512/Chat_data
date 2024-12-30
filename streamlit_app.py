@@ -229,6 +229,10 @@ if uploaded_file is not None:
                             print(f"Error displaying the plot: {str(e)}")
                     else:
                         print('No plot output generated.')
+                    try:
+                        st.image(llm_response, caption="Generated Plot", use_column_width=True)
+                    except:
+                        st.write('you are ture')
             st.session_state.history.append(
             Message("human", human_prompt)
         )
