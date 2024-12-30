@@ -171,6 +171,16 @@ if uploaded_file is not None:
             ]
                 llm_response = api(prompt)
             elif answer['output_type'] == 'visual':
+                    function = '''
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from io import BytesIO
+    
+
+    def plot_and_save(df:DataFrame):
+        #come up with a solution to the question
+        <stub> # only modify this section
+        '''
                     prompt = [
   {
     "role": "system",
