@@ -301,7 +301,10 @@ if uploaded_file is not None:
     </div>
 """
             except:
-                    st.write(type(llm_response))
+                    try:
+                         st.write(type(llm_response))
+                    except:
+                        pass
                     div = f"""
                 <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
                     <strong>{label}:</strong>
