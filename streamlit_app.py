@@ -290,19 +290,15 @@ if uploaded_file is not None:
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
             if type(chat.message) !=str:
-                    image = Image.fromarray(chat.message)  # Convert ndarray to PIL Image
-                    image_bytesio = BytesIO()
-                    image.save(image_bytesio, format='PNG')  # Save the image to BytesIO
-                    image_bytesio.seek(0)  # Reset cursor
-                    image_base64 = base64.b64encode(image_bytesio.read()).decode('utf-8')
                     div = f"""
     <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
         <strong>{label}:</strong>
         <div class="{message_class}" style="margin-top: 5px;">
             <img src="data:image/png;base64,{image_base64}" alt="Generated Image" style="max-width: 100%; height: auto;">
         </div>
-    </div>
-"""
+    </div>  
+""" 
+            st.chat_message("").image(chat.message, caption="Generated Image", use_column_width=True)
             else:
                     div = f"""
                 <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
