@@ -168,6 +168,7 @@ if uploaded_file is not None:
     initialize_session_state()
 
     st.title("Question Bot 🤖")
+    st.subheader("Ask your questions, and I'll do my best to answer them!")
 
    # Chat container
     chat_placeholder = st.container()
@@ -229,7 +230,7 @@ if uploaded_file is not None:
     
         # Text input for chat without box styling
         user_input = cols[0].text_input(
-            "Chat",
+            "",
             value=st.session_state.get("human_prompt", ""),  # Default value
             label_visibility="collapsed",
             key="human_prompt",
