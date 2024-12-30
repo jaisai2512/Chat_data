@@ -19,6 +19,8 @@ from langchain.callbacks import get_openai_callback
 from langchain.chains import ConversationChain
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 import streamlit.components.v1 as components
+from PIL import Image
+
 
 st.set_page_config(
     layout="wide", 
