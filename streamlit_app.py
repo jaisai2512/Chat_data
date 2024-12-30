@@ -292,7 +292,6 @@ if uploaded_file is not None:
                     if not isinstance(llm_response, BytesIO):
                         st.write("llm_response must be a BytesIO object containing image data.")
                     image_base64 = base64.b64encode(llm_response.read()).decode('utf-8')
-                    st.write(type(llm_response))
                     div = f"""
     <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
         <strong>{label}:</strong>
@@ -302,7 +301,7 @@ if uploaded_file is not None:
     </div>
 """
             except:
-                    st.write('er')
+                     st.write(type(llm_response))
                     div = f"""
                 <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
                     <strong>{label}:</strong>
