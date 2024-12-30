@@ -215,6 +215,29 @@ if uploaded_file is not None:
     
         # Creating two columns for input and buttons
         cols = st.columns((6, 1))
+
+        st.markdown(
+    """
+    <style>
+    /* Remove the border, shadow, and background of the text input */
+    div[data-baseweb="input"] > div {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    /* Remove the border and shadow of the input element itself */
+    div[data-baseweb="input"] input {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important; /* Remove outline on focus */
+        font-size: 16px !important; /* Optional: Adjust font size */
+        color: black !important; /* Optional: Adjust text color */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
     
         # Text input for chat without box styling
         user_input = cols[0].text_input(
@@ -224,28 +247,6 @@ if uploaded_file is not None:
             key="human_prompt",
         )
     
-        st.markdown(
-    """
-    <style>
-    div[data-baseweb="input"] {
-        background: transparent;
-        border: none;
-        box-shadow: none;
-    }
-    input {
-        background: transparent;
-        border: none;
-        box-shadow: none;
-        font-size: 16px; /* Optional: Adjust font size */
-        color: #000; /* Optional: Adjust text color */
-    }
-    input:focus {
-        outline: none; /* Remove focus outline */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
         # Submit button for submitting chat
         submit_button = cols[1].form_submit_button(
             "Submit",
