@@ -300,7 +300,7 @@ if uploaded_file is not None:
     """
     
     # Display the custom CSS
-    st.markdown(custom_css, unsafe_allow_html=True)
+        st.markdown(custom_css, unsafe_allow_html=True)
 
 # Chat interface
     
