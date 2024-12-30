@@ -20,7 +20,7 @@ from langchain.chains import ConversationChain
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 import streamlit.components.v1 as components
 from PIL import Image
-
+import base64
 
 st.set_page_config(
     layout="wide", 
@@ -297,14 +297,15 @@ if uploaded_file is not None:
                 </div>
                 """
             elif type(chat.message) == Image:
+                    image_base64 = base64.b64encode(chat.message).decode('utf-8')
                     div = f"""
-        <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
-            <strong>{label}:</strong>
-            <div class="{message_class}" style="margin-top: 5px;">
-                <img src="data:image/png;base64,{image_bytes.decode('utf-8')}" alt="Image" style="max-width: 100%; border-radius: 5px;">
-            </div>
+    <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
+        <strong>{label}:</strong>
+        <div class="{message_class}" style="margin-top: 5px;">
+            <img src="data:image/png;base64,{image_base64}" alt="Generated Image" style="max-width: 100%; height: auto;">
         </div>
-        """
+    </div>
+"""
             st.markdown(div, unsafe_allow_html=True)
         
         # Space for a little breathing room
