@@ -169,7 +169,7 @@ if uploaded_file is not None:
 
     st.title("Question Bot 🤖")
 
-    # Chat container
+   # Chat container
     chat_placeholder = st.container()
     
     # Placeholder for prompt
@@ -200,7 +200,7 @@ if uploaded_file is not None:
             </div>
             """
             st.markdown(div, unsafe_allow_html=True)
-        
+    
         # Space for a little breathing room
         for _ in range(3):
             st.markdown("")
@@ -212,22 +212,39 @@ if uploaded_file is not None:
     # Chat interface
     with prompt_placeholder:
         st.markdown("**Chat**")
-        
+    
         # Creating two columns for input and buttons
         cols = st.columns((6, 1))
-        
-        # Text input for chat
+    
+        # Text input for chat without box styling
         user_input = cols[0].text_input(
             "Chat",
             value=st.session_state.get("human_prompt", "Hello bot"),  # Default value
             label_visibility="collapsed",
             key="human_prompt",
         )
-        
+    
+        # Inject custom CSS to remove box styling
+        st.markdown(
+            """
+            <style>
+            input[type="text"] {
+                border: none;
+                border-bottom: 1px solid #ccc;
+                background: none;
+                outline: none;
+                font-size: 16px;
+                width: 100%;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+    
         # Submit button for submitting chat
         submit_button = cols[1].form_submit_button(
-            "Submit", 
-            type="primary", 
+            "Submit",
+            type="primary",
             on_click=on_click_callback,  # Make sure on_click_callback exists
         )
     
@@ -252,5 +269,6 @@ if uploaded_file is not None:
     });
     </script>
     """, height=0, width=0)
+
 else:
     st.write("Please upload a CSV or PDF file to proceed.")
