@@ -232,6 +232,8 @@ if uploaded_file is not None:
                         st.image(llm_response, caption="Generated Plot", use_column_width=True)
                     except:
                         st.write('you are ture')
+                    st.write(type(llm_response))
+                    st.write(type(base64.b64encode(llm_response.read()).decode('utf-8')))
             st.session_state.history.append(
             Message("human", human_prompt)
         )
