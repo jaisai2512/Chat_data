@@ -230,12 +230,6 @@ if uploaded_file is not None:
             type="primary", 
             on_click=on_click_callback,  # Make sure on_click_callback exists
         )
-        
-        # Clear button for resetting input (only input, not history)
-        clear_button = cols[1].button("Clear")
-        if clear_button:
-            # Clear the input field directly
-            st.session_state.human_prompt = ""  # Reset input field
     
     # JavaScript to simulate 'Enter' key click on submit button
     components.html("""
