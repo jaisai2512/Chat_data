@@ -216,24 +216,94 @@ if uploaded_file is not None:
         # Creating two columns for input and buttons
         cols = st.columns((6, 1))
 
-        custom_css = """
-<style>
-    .stTextInput>div>div>input {
-        border: 2px solid #4CAF50; /* Green border */
-        border-radius: 5px; /* Rounded corners */
-        padding: 10px; /* Padding inside the input */
-        font-size: 16px; /* Font size */
-        color: #333; /* Text color */
+            custom_css = """
+    <style>
+    /* General chat container */
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        border: none; /* Remove border */
+        border-radius: 10px; /* Optional: keep rounded corners */
+        background-color: #f9f9f9; /* Optional: background color */
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: keep shadow for depth */
     }
-    .stTextInput>div>div>input:focus {
-        border-color: #FF5722; /* Orange border on focus */
-        box-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Shadow on focus */
+    
+    /* Chat messages section */
+    .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px;
+        margin-bottom: 10px;
     }
-</style>
-"""
+    
+    /* User's question */
+    .user-message {
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #d4edda; /* Green background for user */
+        color: #155724; /* Dark green text */
+        border-radius: 8px;
+    }
+    
+    /* System's answer */
+    .system-message {
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #cce5ff; /* Blue background for system */
+        color: #004085; /* Dark blue text */
+        border-radius: 8px;
+    }
+    
+    /* Input area */
+    .chat-input-container {
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: none; /* Remove shadow */
+    }
+    
+    .chat-input {
+        flex-grow: 1;
+        padding: 10px;
+        border: none; /* Remove border */
+        border-radius: 10px;
+        font-size: 14px;
+        margin-right: 10px;
+        outline: none;
+        background-color: #f0f0f0; /* Light gray background */
+    }
+    
+    .chat-input:focus {
+        background-color: #ffffff; /* White background on focus */
+    }
+    
+    .send-button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    
+    .send-button:hover {
+        background-color: #0056b3;
+    }
+    </style>
+    """
+    
+    # Display the custom CSS
+    st.markdown(custom_css, unsafe_allow_html=True)
 
-# Display the custom CSS
-        st.markdown(custom_css, unsafe_allow_html=True)
+# Chat interface
+st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
     
         # Text input for chat without box styling
         user_input = cols[0].text_input(
