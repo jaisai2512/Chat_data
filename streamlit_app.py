@@ -13,7 +13,7 @@ import streamlit as st
 import sys
 import io
 import streamlit.components.v1 as components
-
+from typing import Literal, Union
 from langchain import OpenAI
 from langchain.callbacks import get_openai_callback
 from langchain.chains import ConversationChain
@@ -94,7 +94,7 @@ if uploaded_file is not None:
     class Message:
         """Class for keeping track of a chat message."""
         origin: Literal["human", "ai"]
-        message: str
+        message: Union[str, Image]
 
     def load_css():
         with open("static/styles.css", "r") as f:
@@ -141,7 +141,7 @@ if uploaded_file is not None:
   },
   {
     "role": "user",
-    "content": f"Please solve the following problem step-by-step:\n\nProblem: { human_prompt}\n\nPlease output the code in a step-by-step explanation format. The variable properties are:\n {var_prop}.,USE ONLY DATAFRAME FOR OPERATIONS."
+    "content": f"Please solve the following problem step-by-step:\n\nProblem: {human_prompt}\n\nPlease output the code in a step-by-step explanation format. The variable properties are:\n {var_prop}.,USE ONLY DATAFRAME FOR OPERATIONS."
   },
   {
     "role": "assistant",
@@ -149,14 +149,15 @@ if uploaded_file is not None:
   }
 ]
             #llm_response =exec(api(message1), {"df": df})
-            captured_output = io.StringIO()
-            sys.stdout = captured_output  # Redirect stdout
+            if answer['output_type'] == 'numerical':
+                captured_output = io.StringIO()
+                sys.stdout = captured_output  # Redirect stdout
 
-            exec(api(message1), {"df": df})
+                exec(api(message1), {"df": df})
 
-            sys.stdout = sys.__stdout__  # Restore stdout
-            llm_response = captured_output.getvalue().strip()
-            prompt = [
+                sys.stdout = sys.__stdout__  # Restore stdout
+                llm_response = captured_output.getvalue().strip()
+                prompt = [
                 {
         "role": "system",
         "content": "Your task is to take the given answer, based on the provided question, and turn it into a clear, well-structured sentence that is easy to understand"
@@ -166,7 +167,54 @@ if uploaded_file is not None:
     "content": f"Here is the Question:{human_prompt}\nAnswer:{llm_response}"
   }
             ]
-            llm_response = api(prompt)
+                llm_response = api(prompt)
+            elif answer['output_type'] == 'visual':
+                    prompt = [
+  {
+    "role": "system",
+    "content": f"You are an expert data visualization assistant. Your task is to generate Python code inside a function  which answer the user question visually . Follow these guidelines:\n1. Use the provided `df` DataFrame directly, without reinitializing or loading it.\n2. Handle missing data appropriately by preprocessing (e.g., dropping or filling missing values).\n3. Choose an appropriate graphing library (Matplotlib, Seaborn, Plotly, etc.) based on the context and the relationship between the provided variables.\n4. Ensure the visualization is clear and accurately interprets the relationship between the specified variables.\n5. Returning the plot as a buffer using:buf = io.BytesIO() plt.savefig(buf, format='png') buf.seek(0) return buf.\n6. Generate the Python code inside the function `{function}`.\n7. The output should only include the Python code with no comments."},
+  {
+    "role": "user",
+    "content": {
+      "question": f"{human_prompt}",
+      "variables": f"{var_prop}"
+      }
+    }
+]
+                    df = df
+                    generated_code = api(prompt)
+                    print(generated_code)
+                    local_vars = {}
+                    try:
+                        # Execute the dynamically generated code and capture local variables
+                        local_vars = {}
+                        exec(generated_code.replace('```python', '').replace('```', ''), globals(), local_vars)
+                
+                        # Get the plot_and_save function from the local variables
+                        plot_and_save = local_vars.get('plot_and_save')
+                
+                        # Check if plot_and_save is callable and generate the plot
+                        if callable(plot_and_save):
+                            plot_buffer = plot_and_save(df)  # Generate the plot buffer
+                            print("Plot buffer generated.")
+                        else:
+                            print("Function 'plot_and_save' is not defined in the generated code.")
+                
+                    except Exception as e:
+                        print(f"Error executing code: {str(e)}")  # Log any error for debugging purposes
+                
+                    # Check if plot_buffer exists and display the plot if it's generated
+                    if 'plot_buffer' in locals() and plot_buffer:
+                        try:
+                            # Open the image from the byte buffer using io.BytesIO
+                            image = plt.imread(plot_buffer)
+                            plt.savefig('output_image.png')  # Save image to a file
+                            plt.close()
+                            llm_response = image
+                        except Exception as e:
+                            print(f"Error displaying the plot: {str(e)}")
+                    else:
+                        print('No plot output generated.')
             st.session_state.history.append(
             Message("human", human_prompt)
         )
