@@ -184,11 +184,11 @@ if uploaded_file is not None:
             # Determine chat origin (User or AI) and adjust the row and background color
             if chat.origin == 'ai':
                 message_class = "system-message"
-                label = "System"
+                label = "🤖 System"
                 background_color = "#f0f0f0"  # Light grey for system
             else:
                 message_class = "user-message"
-                label = "You"
+                label = "👤 You"
                 background_color = "#d0f0c0"  # Light green for user input
     
             div = f"""
