@@ -27,30 +27,6 @@
     border-radius: 8px;
 }
 
-/* Input area */
-.chat-input-container {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    /* Removed background color and border */
-    border-radius: 10px;
-    box-shadow: none; /* Removed shadow */
-}
-
-.chat-input {
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    margin-right: 10px;
-    outline: none;
-    background-color: #f0f0f0; /* Light gray background */
-}
-
-.chat-input:focus {
-    background-color: #ffffff; /* White background on focus */
-}
 
 .send-button {
     background-color: #007BFF;
