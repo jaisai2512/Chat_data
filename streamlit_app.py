@@ -274,7 +274,9 @@ if uploaded_file is not None:
     </style>
     """,
     unsafe_allow_html=True
-)
+)   
+    st.write(type(llm_response))
+
     with chat_placeholder:
         for chat in st.session_state.history:
             # Determine chat origin (User or AI) and adjust the row and background color
