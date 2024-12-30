@@ -219,28 +219,33 @@ if uploaded_file is not None:
         # Text input for chat without box styling
         user_input = cols[0].text_input(
             "Chat",
-            value=st.session_state.get("human_prompt", "Hello bot"),  # Default value
+            value=st.session_state.get("human_prompt", ""),  # Default value
             label_visibility="collapsed",
             key="human_prompt",
         )
     
-        # Inject custom CSS to remove box styling
         st.markdown(
-            """
-            <style>
-            input[type="text"] {
-                border: none;
-                border-bottom: 1px solid #ccc;
-                background: none;
-                outline: none;
-                font-size: 16px;
-                width: 100%;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
-    
+    """
+    <style>
+    div[data-baseweb="input"] {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+    input {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        font-size: 16px; /* Optional: Adjust font size */
+        color: #000; /* Optional: Adjust text color */
+    }
+    input:focus {
+        outline: none; /* Remove focus outline */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
         # Submit button for submitting chat
         submit_button = cols[1].form_submit_button(
             "Submit",
