@@ -289,7 +289,7 @@ if uploaded_file is not None:
                 label = "👤 You"
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
-            if type(llm_response) !=str:
+            if type(chat.message) !=str:
                     image = Image.fromarray(chat.message)  # Convert ndarray to PIL Image
                     image_bytesio = BytesIO()
                     image.save(image_bytesio, format='PNG')  # Save the image to BytesIO
@@ -312,7 +312,6 @@ if uploaded_file is not None:
                     </div>
                 </div>
                 """
-            st.markdown(div, unsafe_allow_html=True)
         
         # Space for a little breathing room
         for _ in range(3):
