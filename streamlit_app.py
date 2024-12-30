@@ -285,8 +285,8 @@ if uploaded_file is not None:
                 message_class = "user-message"
                 label = "👤 You"
                 background_color = "#d0f0c0"  # Light green for user input
-            try:
-                if answer['output_type'] == 'numerical':
+            st.write(type(chat.message))
+            if type(chat.message) == str :
                     div = f"""
                 <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
                     <strong>{label}:</strong>
@@ -295,7 +295,7 @@ if uploaded_file is not None:
                     </div>
                 </div>
                 """
-                elif answer['output_type'] == 'visual':
+            elif type(chat.message) == Image:
                     div = f"""
         <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
             <strong>{label}:</strong>
@@ -304,9 +304,7 @@ if uploaded_file is not None:
             </div>
         </div>
         """
-                st.markdown(div, unsafe_allow_html=True)
-            except:
-                pass
+            st.markdown(div, unsafe_allow_html=True)
         
         # Space for a little breathing room
         for _ in range(3):
