@@ -119,7 +119,7 @@ if uploaded_file is not None:
         "role": "user",
         "content": f"Query:{human_prompt}\nVariables: {df.columns}\n Please output only the json nothing apart from it"
     }]           
-            answer = json.loads(api(message))
+            global answer = json.loads(api(message))
             var_prop = []
             for i in answer['matched_variables']:
                 for j in o_summary:
