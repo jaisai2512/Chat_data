@@ -288,7 +288,7 @@ if uploaded_file is not None:
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
             try:
-                    image_base64 = base64.b64encode(chat.message).decode('utf-8')
+                    image_base64 = llm_response
                     div = f"""
     <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
         <strong>{label}:</strong>
