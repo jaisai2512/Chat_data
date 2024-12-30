@@ -22,6 +22,7 @@ import streamlit.components.v1 as components
 from PIL import Image
 import base64
 
+image_base64 =""
 st.set_page_config(
     layout="wide", 
     page_title="EDA AUTOMATION", 
@@ -232,8 +233,11 @@ if uploaded_file is not None:
                         st.image(llm_response, caption="Generated Plot", use_column_width=True)
                     except:
                         st.write('you are ture')
-                    st.write(type(llm_response))
-                    st.write(type(base64.b64encode(llm_response.read()).decode('utf-8')))
+                    image = Image.fromarray(llm_response)  # Convert ndarray to PIL Image
+                    image_bytesio = BytesIO()
+                    image.save(image_bytesio, format='PNG')  # Save the image to BytesIO
+                    image_bytesio.seek(0)  # Reset cursor
+                    image_base64 = base64.b64encode(image_bytesio.read()).decode('utf-8')
             st.session_state.history.append(
             Message("human", human_prompt)
         )
@@ -291,8 +295,6 @@ if uploaded_file is not None:
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
             try:
-                    image_base64 = base64.b64encode(llm_response.read()).decode('utf-8')
-                    st.write(llm_response)
                     div = f"""
     <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
         <strong>{label}:</strong>
