@@ -21,7 +21,7 @@ from langchain.chains.conversation.memory import ConversationSummaryMemory
 import streamlit.components.v1 as components
 from PIL import Image
 import base64
-
+llm_response = ""
 image_base64 =""
 st.set_page_config(
     layout="wide", 
@@ -294,7 +294,7 @@ if uploaded_file is not None:
                 label = "👤 You"
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
-            try:
+            if type(llm_response) !=str:
                     div = f"""
     <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
         <strong>{label}:</strong>
@@ -303,7 +303,7 @@ if uploaded_file is not None:
         </div>
     </div>
 """
-            except:
+            else:
                     div = f"""
                 <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
                     <strong>{label}:</strong>
