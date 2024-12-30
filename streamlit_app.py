@@ -5,13 +5,12 @@ import json
 import seaborn as sns
 from Summary import summary_gen
 import matplotlib.pyplot as plt
-import io
+from io import BytesIO
 import openai
 from dataclasses import dataclass
 from typing import Literal
 import streamlit as st
 import sys
-import io
 import streamlit.components.v1 as components
 from typing import Literal, Union
 from langchain import OpenAI
