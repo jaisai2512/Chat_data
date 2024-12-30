@@ -308,6 +308,8 @@ if uploaded_file is not None:
                     </div>
                 </div>
                 """
+            st.markdown(div, unsafe_allow_html=True)
+            
         
         # Space for a little breathing room
         for _ in range(3):
