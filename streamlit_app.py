@@ -290,7 +290,7 @@ if uploaded_file is not None:
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
             if type(chat.message) !=str:
-                    st.chat_message("").image(chat.message, caption="Generated Image", use_column_width=True)
+                    st.chat_message("assistant").image(chat.message, caption="Generated Image", use_column_width=True)
             else:
                     div = f"""
                 <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
