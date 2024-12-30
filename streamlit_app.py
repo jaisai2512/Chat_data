@@ -287,16 +287,7 @@ if uploaded_file is not None:
                 label = "👤 You"
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
-            if type(chat.message) == str :
-                    div = f"""
-                <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
-                    <strong>{label}:</strong>
-                    <div class="{message_class}" style="margin-top: 5px;">
-                        {chat.message}
-                    </div>
-                </div>
-                """
-            elif type(chat.message) == Image:
+            try:
                     image_base64 = base64.b64encode(chat.message).decode('utf-8')
                     div = f"""
     <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
@@ -306,6 +297,15 @@ if uploaded_file is not None:
         </div>
     </div>
 """
+            except:
+                    div = f"""
+                <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
+                    <strong>{label}:</strong>
+                    <div class="{message_class}" style="margin-top: 5px;">
+                        {chat.message}
+                    </div>
+                </div>
+                """
             st.markdown(div, unsafe_allow_html=True)
         
         # Space for a little breathing room
