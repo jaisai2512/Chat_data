@@ -127,6 +127,7 @@ if uploaded_file is not None:
                     if(j['column'] == i):
                         var_prop.append(j)
                         break
+            st.write(answer)
             message1 =[
     {
         "role": "system",
