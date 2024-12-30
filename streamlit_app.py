@@ -275,8 +275,11 @@ if uploaded_file is not None:
     """,
     unsafe_allow_html=True
 )
+    def s():
+        return answer
     # Chat interface
     with chat_placeholder:
+        answer = s()
         for chat in st.session_state.history:
             # Determine chat origin (User or AI) and adjust the row and background color
             if chat.origin == 'ai':
