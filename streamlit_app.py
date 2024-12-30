@@ -197,7 +197,6 @@ if uploaded_file is not None:
     }
 ]
                     generated_code = api(prompt)
-                    print(generated_code)
                     local_vars = {}
                     try:
                         # Execute the dynamically generated code and capture local variables
@@ -210,12 +209,12 @@ if uploaded_file is not None:
                         # Check if plot_and_save is callable and generate the plot
                         if callable(plot_and_save):
                             plot_buffer = plot_and_save(df)  # Generate the plot buffer
-                            print("Plot buffer generated.")
+                            st.write("Plot buffer generated.")
                         else:
-                            print("Function 'plot_and_save' is not defined in the generated code.")
+                            st.write("Function 'plot_and_save' is not defined in the generated code.")
                 
                     except Exception as e:
-                        print(f"Error executing code: {str(e)}")  # Log any error for debugging purposes
+                        st.write(f"Error executing code: {str(e)}")  # Log any error for debugging purposes
                 
                     # Check if plot_buffer exists and display the plot if it's generated
                     if 'plot_buffer' in locals() and plot_buffer:
@@ -226,9 +225,9 @@ if uploaded_file is not None:
                             plt.close()
                             llm_response = image
                         except Exception as e:
-                            print(f"Error displaying the plot: {str(e)}")
+                            st.write(f"Error displaying the plot: {str(e)}")
                     else:
-                        print('No plot output generated.')
+                        st.write('No plot output generated.')
                     try:
                         st.image(llm_response, caption="Generated Plot", use_column_width=True)
                     except:
