@@ -20,6 +20,7 @@ from langchain.chains.conversation.memory import ConversationSummaryMemory
 import streamlit.components.v1 as components
 from PIL import Image
 
+global answer
 
 st.set_page_config(
     layout="wide", 
@@ -119,7 +120,7 @@ if uploaded_file is not None:
         "role": "user",
         "content": f"Query:{human_prompt}\nVariables: {df.columns}\n Please output only the json nothing apart from it"
     }]           
-            global answer = json.loads(api(message))
+            answer = json.loads(api(message))
             var_prop = []
             for i in answer['matched_variables']:
                 for j in o_summary:
