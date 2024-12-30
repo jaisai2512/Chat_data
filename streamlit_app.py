@@ -172,6 +172,7 @@ if uploaded_file is not None:
             ]
                 llm_response = api(prompt)
             elif answer['output_type'] == 'visual':
+                    llm_response = ""
                     st.write("sd")
                     function = '''
     import pandas as pd
