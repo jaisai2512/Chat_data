@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import openai
 from dataclasses import dataclass
+import io
 from typing import Literal
 import streamlit as st
 import sys
@@ -285,7 +286,7 @@ if uploaded_file is not None:
                 message_class = "user-message"
                 label = "👤 You"
                 background_color = "#d0f0c0"  # Light green for user input
-            st.write(type(chat.message))
+            #st.write(type(chat.message))
             if type(chat.message) == str :
                     div = f"""
                 <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
