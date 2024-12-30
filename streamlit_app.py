@@ -169,7 +169,16 @@ if uploaded_file is not None:
 
     st.title("Question Bot 🤖")
     st.write("Ask your questions, and I\'ll do my best to answer them!")
-
+    st.markdown(
+    """
+    <style>
+    h1 {
+        margin-bottom: 5px !important;  /* Adjust this value as needed */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
    # Chat container
     chat_placeholder = st.container()
     
