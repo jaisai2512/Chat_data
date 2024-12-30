@@ -233,11 +233,6 @@ if uploaded_file is not None:
                         st.image(llm_response, caption="Generated Plot", use_column_width=True)
                     except:
                         st.write('you are ture')
-                    image = Image.fromarray(llm_response)  # Convert ndarray to PIL Image
-                    image_bytesio = BytesIO()
-                    image.save(image_bytesio, format='PNG')  # Save the image to BytesIO
-                    image_bytesio.seek(0)  # Reset cursor
-                    image_base64 = base64.b64encode(image_bytesio.read()).decode('utf-8')
             st.session_state.history.append(
             Message("human", human_prompt)
         )
@@ -295,6 +290,11 @@ if uploaded_file is not None:
                 background_color = "#d0f0c0"  # Light green for user input
             #st.write(type(chat.message))
             if type(llm_response) !=str:
+                    image = Image.fromarray(chat.message)  # Convert ndarray to PIL Image
+                    image_bytesio = BytesIO()
+                    image.save(image_bytesio, format='PNG')  # Save the image to BytesIO
+                    image_bytesio.seek(0)  # Reset cursor
+                    image_base64 = base64.b64encode(image_bytesio.read()).decode('utf-8')
                     div = f"""
     <div class="chat-row" style="background-color: {background_color}; padding: 10px; margin: 5px; border-radius: 5px;">
         <strong>{label}:</strong>
