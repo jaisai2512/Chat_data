@@ -1,16 +1,4 @@
-/* General chat container */
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 80vh;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    /* Removed border and background color */
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: none; /* Removed shadow */
-}
+
 
 /* Chat messages section */
 .chat-messages {
