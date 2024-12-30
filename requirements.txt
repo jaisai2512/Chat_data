@@ -19,4 +19,4 @@ langchain-community
 langchain-core
 pytest-warnings
 typing
-base64
+pybase64
