@@ -183,7 +183,6 @@ if uploaded_file is not None:
       }
     }
 ]
-                    df = df
                     generated_code = api(prompt)
                     print(generated_code)
                     local_vars = {}
