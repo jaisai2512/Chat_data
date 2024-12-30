@@ -193,6 +193,7 @@ if uploaded_file is not None:
     .stForm {
         border: none !important;
         box-shadow: none !important;
+        margin-top: 0 !important;  /* Remove top margin */
     }
     </style>
     """,
