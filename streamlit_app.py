@@ -172,6 +172,7 @@ if uploaded_file is not None:
             ]
                 llm_response = api(prompt)
             elif answer['output_type'] == 'visual':
+                    st.write("sd")
                     function = '''
     import pandas as pd
     import matplotlib.pyplot as plt
