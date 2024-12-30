@@ -222,15 +222,14 @@ if uploaded_file is not None:
     
     # Chat interface
     with prompt_placeholder:
-        st.markdown("**Chat**")
-    
+
         # Creating two columns for input and buttons
         cols = st.columns((6, 1))
 # Chat interface
     
         # Text input for chat without box styling
         user_input = cols[0].text_input(
-            "",
+            "chat",
             value=st.session_state.get("human_prompt", ""),  # Default value
             label_visibility="collapsed",
             key="human_prompt",
