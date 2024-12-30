@@ -37,7 +37,7 @@ def github_css(url):
         return f"<style>/* Error loading CSS: {e} */</style>"
 
 # URL to the raw CSS file on GitHub
-css_url = "https://github.com/jaisai2512/Chat_data/blob/main/style.css"
+css_url = "https://github.com/jaisai2512/EDA2/blob/main/style.css"
 
 # Inject the CSS into the Streamlit app
 st.markdown(github_css(css_url), unsafe_allow_html=True)
