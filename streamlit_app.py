@@ -177,7 +177,17 @@ if uploaded_file is not None:
     
     # Empty placeholder for credit card (you can modify the caption if needed)
     credit_card_placeholder = st.empty()
-    
+    st.markdown(
+    """
+    <style>
+    .stForm {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
     # Chat interface
     with chat_placeholder:
         for chat in st.session_state.history:
