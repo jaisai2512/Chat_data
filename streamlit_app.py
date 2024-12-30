@@ -156,6 +156,17 @@ if uploaded_file is not None:
 
             sys.stdout = sys.__stdout__  # Restore stdout
             llm_response = captured_output.getvalue().strip()
+            prompt = [
+                {
+        "role": "system",
+        "content": "Your task is to take the given answer, based on the provided question, and turn it into a clear, well-structured sentence that is easy to understand"
+    },
+  {
+    "role": "user",
+    "content": f"Here is the Question:{human_prompt}\nAnswer:{llm_response}"
+  }
+            ]
+            llm_response = api(prompt)
             st.session_state.history.append(
             Message("human", human_prompt)
         )
