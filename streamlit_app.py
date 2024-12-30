@@ -216,7 +216,7 @@ if uploaded_file is not None:
         # Creating two columns for input and buttons
         cols = st.columns((6, 1))
 
-            custom_css = """
+        custom_css = """
     <style>
     /* General chat container */
     .chat-container {
@@ -303,7 +303,6 @@ if uploaded_file is not None:
     st.markdown(custom_css, unsafe_allow_html=True)
 
 # Chat interface
-st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
     
         # Text input for chat without box styling
         user_input = cols[0].text_input(
